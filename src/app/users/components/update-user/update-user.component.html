@@ -1,0 +1,14 @@
+<tbody>
+  <tr>
+    <td>
+      <input type="text" [(ngModel)]="editedUser.username" placeholder="Nom" />
+    </td>
+    <td>
+      <input type="email" [(ngModel)]="editedUser.email" placeholder="Email" />
+    </td>
+    <td>
+      <button (click)="saveChanges()">✔</button>
+      <button (click)="cancelEdit()">✖</button>
+    </td>
+  </tr>
+</tbody>

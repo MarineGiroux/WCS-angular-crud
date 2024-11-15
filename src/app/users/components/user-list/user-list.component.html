@@ -1,0 +1,38 @@
+<div>
+  <h1>Liste des Utilisateurs</h1>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Email</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users$ | async; track user.id) {
+      <tr>
+        @if (editingUser && editingUser.id === user.id) {
+        <app-update-user
+          [user]="user"
+          (update)="updateUser($event)"
+          (cancel)="cancelEdit()"
+        ></app-update-user>
+        } @else {
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button (click)="enableEdit(user)">✎</button>
+        </td>
+        <td>
+          <app-delete-user
+            [user]="user"
+            (delete)="deleteUser($event)"
+          ></app-delete-user>
+        </td>
+        }
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
