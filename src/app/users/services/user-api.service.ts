@@ -9,7 +9,7 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 export class UserApiService {
 
   private _http = inject(HttpClient);
-  private readonly _BASE_API_URL = '/db/db.json';
+  private readonly _BASE_API_URL : string ='/db/db.json';
   private usersSubject = new BehaviorSubject<User[]>([]);
   users$ = this.usersSubject.asObservable();
 

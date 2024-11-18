@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { UserListComponent } from "../../components/user-list/user-list.component";
+import { ListUserComponent } from "../../components/list-user/list-user.component";
 import { CreateUserComponent } from "../../components/create-user/create-user.component";
 import { UpdateUserComponent } from "../../components/update-user/update-user.component";
 import { DeleteUserComponent } from "../../components/delete-user/delete-user.component";
@@ -8,10 +8,10 @@ import { DeleteUserComponent } from "../../components/delete-user/delete-user.co
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [RouterLink, UserListComponent, CreateUserComponent, UpdateUserComponent, DeleteUserComponent],
-  templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.css'
+  imports: [RouterLink, ListUserComponent, CreateUserComponent, UpdateUserComponent, DeleteUserComponent],
+  templateUrl: './user-management-page.html',
+  styleUrl: './user-management-page.css'
 })
-export class HomePageComponent {
+export class UserManagementPageComponent {
 
 }

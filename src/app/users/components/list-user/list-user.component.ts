@@ -8,7 +8,7 @@ import { UpdateUserComponent } from '../update-user/update-user.component';
 import { DeleteUserComponent } from '../delete-user/delete-user.component';
 
 @Component({
-  selector: 'app-user-list',
+  selector: 'app-list-user',
   standalone: true,
   imports: [
     CommonModule,
@@ -16,10 +16,10 @@ import { DeleteUserComponent } from '../delete-user/delete-user.component';
     UpdateUserComponent,
     DeleteUserComponent,
   ],
-  templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.css',
+  templateUrl: './list-user.component.html',
+  styleUrl: './list-user.component.css',
 })
-export class UserListComponent {
+export class ListUserComponent {
   private _userApiService = inject(UserApiService);
 
   users$: Observable<User[]> = this._userApiService.users$;
