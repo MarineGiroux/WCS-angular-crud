@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { User } from '../../models/user.interface';
+import { Component, inject, Input } from '@angular/core';
+import { UserFacadeService } from '../../services/user-facade.service';
 
 @Component({
   selector: 'app-delete-user',
@@ -9,10 +9,10 @@ import { User } from '../../models/user.interface';
   styleUrl: './delete-user.component.css',
 })
 export class DeleteUserComponent {
-  @Input() user!: User;
-  @Output() delete = new EventEmitter<User>();
+  private _userFacadeService : UserFacadeService = inject(UserFacadeService);
+  @Input({required : true}) userID!: string;
 
-  confirmDelete() {
-    this.delete.emit(this.user);
+  deleteUser(): void{
+    this._userFacadeService.delete$(this.userID)
   }
 }

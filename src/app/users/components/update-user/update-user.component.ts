@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { User } from '../../models/user.interface';
 import { FormsModule } from '@angular/forms';
+import { UserFacadeService } from '../../services/user-facade.service';
 
 @Component({
   selector: 'app-update-user',
@@ -10,21 +11,12 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './update-user.component.css',
 })
 export class UpdateUserComponent {
-  @Input() user!: User;
-  @Output() update = new EventEmitter<User>();
-  @Output() cancel = new EventEmitter<void>();
+  private _facadeUserService: UserFacadeService = inject(UserFacadeService);
+  @Input({ required: true }) user!: User;
+  @Output() updateComplete = new EventEmitter<void>();
 
-  editedUser!: User;
-
-  ngOnInit() {
-    this.editedUser = { ...this.user };
-  }
-
-  saveChanges() {
-    this.update.emit(this.editedUser);
-  }
-
-  cancelEdit() {
-    this.cancel.emit();
+  onSubmit(): void {
+    this._facadeUserService.update$(this.user);
+    this.updateComplete.emit();
   }
 }

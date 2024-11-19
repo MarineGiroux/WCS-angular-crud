@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { User, UserList } from '../../models/user.interface';
+import { User } from '../../models/user.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserApiService } from '../../services/user-api.service';
+import { UserFacadeService } from '../../services/user-facade.service';
 
 @Component({
   selector: 'app-create-user',
@@ -12,26 +13,13 @@ import { UserApiService } from '../../services/user-api.service';
   styleUrl: './create-user.component.css'
 })
 export class CreateUserComponent {
-  private userApiService = inject(UserApiService);
+  private _facadeUserService : UserFacadeService = inject(UserFacadeService);
 
-  user: User = {
-    id: '',
-    username: '',
-    email: '',
-  };
+  user : User = new User ("", "", "");
 
-  createUser(user: User) {
-    user.id = this.generateUUID();
-    this.userApiService.create(user);
-
-    this.user = {
-      id: '',
-      username: '',
-      email: '',
-    };
-  }
-
-  private generateUUID(): string {
-    return crypto.randomUUID(); 
+  onSubmit(): void {
+    const userId = Math.floor(Math.random()* 1000).toString();
+    this.user.id = userId;
+    this._facadeUserService.post$(this.user);
   }
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User, UserList } from '../models/user.interface';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { User } from '../models/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,70 +9,21 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 export class UserApiService {
 
   private _http = inject(HttpClient);
-  private readonly _BASE_API_URL : string ='/db/db.json';
-  private usersSubject = new BehaviorSubject<User[]>([]);
-  users$ = this.usersSubject.asObservable();
+  private readonly _BASE_API_URL : string = "http://localhost:3000/";
 
-  constructor() {
-    this.loadUsers();
+  getAll$(): Observable<User[]> {
+    return this._http.get<User[]>(this._BASE_API_URL + "users");
   }
 
-  private loadUsers() {
-    this._http
-      .get<UserList>(this._BASE_API_URL)
-      .pipe(
-        map((response) => {
-          const apiUsers = response.users;
-          const localUsers = this.getFromLocalStorage('users');
-          const allUsers = this.mergeUsers(apiUsers, localUsers);
-          return allUsers;
-        })
-      )
-      .subscribe((users) => {
-        this.usersSubject.next(users);
-      });
+  post$(user: User) : Observable<User> {
+    return this._http.post<User>(this._BASE_API_URL + "users", user);
   }
 
-  private mergeUsers(apiUsers: User[], localUsers: User[]): User[] {
-    const userMap = new Map<string, User>();
-    localUsers.forEach((user) => userMap.set(user.id, user));
-  
-    apiUsers.forEach((user) => {
-      if (!userMap.has(user.id)) {
-        userMap.set(user.id, user);
-      }
-    });
-  
-    return Array.from(userMap.values());
+  update$(user : User) : Observable<User>{
+    return this._http.put<User>(this._BASE_API_URL + "users/" + user.id, user)
   }
 
-
-  create(user: User) {
-    const currentUsers = this.usersSubject.value;
-    currentUsers.push(user);
-    this.usersSubject.next(currentUsers);
-    localStorage.setItem('users', JSON.stringify(currentUsers));
+  delete$(userID : string) : Observable<void>{
+    return this._http.delete<void>(this._BASE_API_URL + "users/" + userID)
   }
-
-  delete(user: User) {
-    const currentUsers = this.usersSubject.value.filter(
-      (u) => u.id !== user.id
-    );
-    this.usersSubject.next(currentUsers);
-    localStorage.setItem('users', JSON.stringify(currentUsers));
-  }
-
-  update(user: User) {
-    const currentUsers = this.usersSubject.value.map((u) =>
-      u.id === user.id ? { ...u, ...user } : u
-    );
-    this.usersSubject.next(currentUsers);
-    localStorage.setItem('users', JSON.stringify(currentUsers));
-  }
-
-  getFromLocalStorage(item: string): User[] {
-    const stringData = localStorage.getItem(item);
-    return JSON.parse(stringData || '[]');
-  }
-
 }

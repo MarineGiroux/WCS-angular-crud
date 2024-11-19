@@ -1,48 +1,31 @@
 import { Component, inject } from '@angular/core';
 import { User } from '../../models/user.interface';
-import { UserApiService } from '../../services/user-api.service';
 import { Observable } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { AsyncPipe } from '@angular/common';
 import { UpdateUserComponent } from '../update-user/update-user.component';
 import { DeleteUserComponent } from '../delete-user/delete-user.component';
+import { UserFacadeService } from '../../services/user-facade.service';
+import { ClonePipe } from '../../../core/clone.pipe';
 
 @Component({
   selector: 'app-list-user',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    UpdateUserComponent,
-    DeleteUserComponent,
-  ],
+  imports: [AsyncPipe, ClonePipe, UpdateUserComponent, DeleteUserComponent],
   templateUrl: './list-user.component.html',
   styleUrl: './list-user.component.css',
 })
 export class ListUserComponent {
-  private _userApiService = inject(UserApiService);
+  private _facadeUserService: UserFacadeService = inject(UserFacadeService);
 
-  users$: Observable<User[]> = this._userApiService.users$;
-  editingUser: User | null = null;
+  users$: Observable<User[]> = this._facadeUserService.getAll$();
 
-  enableEdit(user: User) {
-    this.editingUser = user;
+  editingUserId: string | null = null;
+
+  enableEdit(userId: string) {
+    this.editingUserId = userId;
   }
 
   cancelEdit() {
-    this.editingUser = null;
-  }
-
-  updateUser(user: User) {
-    this._userApiService.update(user);
-    this.editingUser = null;
-  }
-
-  deleteUser(user: User) {
-    this._userApiService.delete(user);
-  }
-
-  trackByUserId(index: number, user: User): string {
-    return user.id;
+    this.editingUserId = null;
   }
 }

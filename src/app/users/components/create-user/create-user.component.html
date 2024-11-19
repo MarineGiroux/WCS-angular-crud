@@ -1,5 +1,5 @@
 <h1>Création d'un nouvel utilisateur</h1>
-
+<form #myForm="ngForm" (ngSubmit)="onSubmit()">
 <table class="table table-striped">
   <thead>
     <tr>
@@ -16,7 +16,6 @@
         <button
           type="submit"
           class="btn btn-success"
-          (click)="createUser(user)"
         >
           ✔
         </button>
@@ -24,3 +23,4 @@
     </tr>
   </tbody>
 </table>
+</form>

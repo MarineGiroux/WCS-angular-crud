@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './users/pages/home-page/home-page.component';
+import { UserManagementPageComponent } from './users/pages/user-management-page/user-management-page';
 
 export const routes: Routes = [
-    {path: '', component: HomePageComponent},
+    {path: '', component: UserManagementPageComponent},
 ];

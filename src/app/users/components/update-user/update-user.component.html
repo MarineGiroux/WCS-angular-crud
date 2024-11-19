@@ -1,14 +1,27 @@
-<tbody>
-  <tr>
-    <td>
-      <input type="text" [(ngModel)]="editedUser.username" placeholder="Nom" />
-    </td>
-    <td>
-      <input type="email" [(ngModel)]="editedUser.email" placeholder="Email" />
-    </td>
-    <td>
-      <button (click)="saveChanges()">✔</button>
-      <button (click)="cancelEdit()">✖</button>
-    </td>
-  </tr>
-</tbody>
+<form #myForm="ngForm" (ngSubmit)="onSubmit()">
+  <tbody>
+    <tr>
+      <td>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="user.username"
+          placeholder="Nom"
+        />
+      </td>
+      <td>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="user.email"
+          placeholder="Email"
+        />
+      </td>
+      <td>
+        <button type="submit" (click)="updateComplete.emit()">✔</button>
+      </td>
+    </tr>
+  </tbody>
+</form>

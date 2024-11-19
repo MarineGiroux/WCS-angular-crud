@@ -10,29 +10,24 @@
       </tr>
     </thead>
     <tbody>
-      @for (user of users$ | async; track user.id) {
+      @for (user of users$ | async; track user.id) { @if(editingUserId ===
+      user.id){
+      <app-update-user
+      [user]="user | clone"
+      (updateComplete)="cancelEdit()"
+    ></app-update-user>
+      }@else{
       <tr>
-        @if (editingUser && editingUser.id === user.id) {
-        <app-update-user
-          [user]="user"
-          (update)="updateUser($event)"
-          (cancel)="cancelEdit()"
-        ></app-update-user>
-        } @else {
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
         <td>
-          <button (click)="enableEdit(user)">✎</button>
+          <button (click)="enableEdit(user.id)">✎</button>
         </td>
         <td>
-          <app-delete-user
-            [user]="user"
-            (delete)="deleteUser($event)"
-          ></app-delete-user>
+          <app-delete-user [userID]="user.id"></app-delete-user>
         </td>
-        }
       </tr>
-      }
+      } }
     </tbody>
   </table>
 </div>
